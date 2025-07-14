@@ -1,13 +1,13 @@
+#TASK:Вывести в файл список PID всех процессов, которые были запущены командами, расположенными в /sbin/
+
 #!/bin/bash
 
-FILE_FOR_ANSWR="ANSWR.txt"
+OUTPUT_FILE="answ2.txt"
 
-PROCESS_COUNTER=$(ps -u $(whoami) --no-headers | wc -l)
+ps ax -o pid=,cmd= --no-headers | while read -r PID CMD REST; do
+	if [[ $CMD == /sbin/* ]]; then
+		echo "$PID" >> "$OUTPUT_FILE"
+	fi
+done
 
-echo "$PROCESS_COUNTER" >> "$FILE_FOR_ANSWR"
-
-echo "Количество процессов запущенных от текущего user $PROCESS_COUNTER были записаны в файл ANSWR.txt"
-
-ANSWR2=$(ps -u $(whoami) -o pid,cmd)
-echo "$ANSWR2"
-
+echo "список процессов записан в файл $OUTPUT_FILE" 
